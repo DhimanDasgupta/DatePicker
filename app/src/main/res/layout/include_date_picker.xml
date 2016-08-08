@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:animateLayoutChanges="true">
+
+    <TextView
+        android:id="@+id/month_text_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:background="@drawable/shape_accent_oval"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/month_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:id="@+id/day_text_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:background="@drawable/shape_accent_oval"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/day_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <TextView
+        android:id="@+id/year_text_view"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:background="@drawable/shape_accent_oval"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/year_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+</LinearLayout>

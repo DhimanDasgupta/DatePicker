@@ -21,7 +21,7 @@ public class MonthAdapter extends RecyclerView.Adapter<MonthAdapter.MonthViewHol
     @Override
     public MonthViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(R.layout.adapter_months, null);
+        final View view = inflater.inflate(R.layout.adapter_months, parent, false);
         return new MonthViewHolder(view);
     }
 

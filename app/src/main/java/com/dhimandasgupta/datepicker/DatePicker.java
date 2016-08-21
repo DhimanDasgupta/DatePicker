@@ -3,6 +3,7 @@ package com.dhimandasgupta.datepicker;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -12,14 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by murali_m on 08/08/16.
  */
 public class DatePicker extends LinearLayout implements DateSelectionListener {
     private static int MONTH_DURATION = 10;
-    
+
     private int mCurrentMonth;
     private int mCurrentDay;
     private int mCurrentYear;
@@ -40,6 +40,8 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
     private Month[] mMonths = new Month[12];
 
     private boolean mDateSelected = false;
+
+    private OnDateSelectedListener mDateSelectedListener;
 
     public DatePicker(Context context) {
         super(context);
@@ -84,14 +86,32 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
         mMonthRecyclerView = (RecyclerView) view.findViewById(R.id.month_recycler_view);
         mMonthRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mMonthTextView = (TextView) view.findViewById(R.id.month_text_view);
+        mMonthTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setMonthSelectionMode();
+            }
+        });
 
         mDayRecylerView = (RecyclerView) view.findViewById(R.id.day_recycler_view);
         mDayRecylerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mDayTextView = (TextView) view.findViewById(R.id.day_text_view);
+        mDayTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDaySelectionMode();
+            }
+        });
 
         mYearRecyclerView = (RecyclerView) view.findViewById(R.id.year_recycler_view);
         mYearRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         mYearTextView = (TextView) view.findViewById(R.id.year_text_view);
+        mYearTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setYearSelectionMode();
+            }
+        });
     }
 
     private void setupViews() {
@@ -266,6 +286,7 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
     public void onMonthSelected(Month month) {
         mCurrentSelecedMonth = month.getCode();
         mMonthTextView.setText(month.getName());
+        mMonthTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         setDaySelectionMode();
     }
 
@@ -273,6 +294,7 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
     public void onDaySelected(int day) {
         mCurrentSelectedDay = day;
         mDayTextView.setText(String.valueOf(mCurrentSelectedDay));
+        mDayTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         setYearSelectionMode();
     }
 
@@ -280,6 +302,7 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
     public void onYearSelected(int year) {
         mCurrentSelectedYear = year;
         mYearTextView.setText(String.valueOf(mCurrentSelectedYear));
+        mYearTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         mYearTextView.setVisibility(VISIBLE);
         mYearRecyclerView.setVisibility(GONE);
 
@@ -287,7 +310,18 @@ public class DatePicker extends LinearLayout implements DateSelectionListener {
         mDateSelected = true;
 
         if (mDateSelected) {
-            // Date Selected
+            if (mDateSelectedListener != null) {
+                mDateSelectedListener.onDateSelected(mCurrentSelectedDay,
+                        mCurrentSelecedMonth, mCurrentSelectedYear);
+            }
         }
+    }
+
+    public void setDateSelectedListener(OnDateSelectedListener listener) {
+        mDateSelectedListener = listener;
+    }
+
+    public interface OnDateSelectedListener {
+        void onDateSelected(int dayOfMonth, int monthIndex, int year);
     }
 }
